@@ -65,7 +65,6 @@ pub fn purpur_install(arg:&ArgMatches){
     let game_version: &String = arg.get_one("game_version").unwrap();
     let build_edition: &String = arg.get_one("build_edition").unwrap();
     let installer = get(format!("https://api.purpurmc.org/v2/purpur/{game_version}/{build_edition}/download"));
-    println!("{:#?}",installer);
     let buffer_file = std::fs::File::create("purpur.jar");
     buffer_file.unwrap().write_all(&installer.unwrap().bytes().unwrap()).unwrap();
     match fs::read_to_string("purpur.jar"){
@@ -80,6 +79,28 @@ pub fn purpur_install(arg:&ArgMatches){
     fs::write("start.bat","java -Xmx2G -jar purpur.jar nogui\npause").unwrap();
     execute_shell(false,vec![
         ("java",vec!["-jar","purpur.jar"]),
+        ("chmod",vec!["+x","start.sh"]),
+        ("chmod",vec!["+x","start.bat"])
+    ]);
+}
+pub fn paper_install(arg:&ArgMatches){
+    let game_version: &String = arg.get_one("game_version").unwrap();
+    let build_edition: &String = arg.get_one("build_edition").unwrap();
+    let installer = get(format!("https://api.papermc.io/v2/projects/paper/versions/{game_version}/builds/{build_edition}/downloads/paper-{game_version}-{build_edition}.jar"));
+    let buffer_file = std::fs::File::create("paper.jar");
+    buffer_file.unwrap().write_all(&installer.unwrap().bytes().unwrap()).unwrap();
+    match fs::read_to_string("paper.jar"){
+        Ok(_)=>{
+            println!("Error downloading jar.");
+            fs::remove_file("paper.jar").unwrap();
+            return
+        }
+        Err(_)=>{}
+    }
+    fs::write("start.sh","#!/usr/bin/env bash\njava -Xmx2G -jar paper.jar nogui").unwrap();
+    fs::write("start.bat","java -Xmx2G -jar paper.jar nogui\npause").unwrap();
+    execute_shell(false,vec![
+        ("java",vec!["-jar","paper.jar"]),
         ("chmod",vec!["+x","start.sh"]),
         ("chmod",vec!["+x","start.bat"])
     ]);

@@ -30,8 +30,16 @@ Args:
 > Install a **Purpur** server in __CWD__
 
 Args:
-  • *Build Edition*,
-  • *Game Version*
+  • *Game Version*,
+  • *Build Edition*
+
+#### PAPER
+
+> Install a **Paper** server in __CWD__
+
+Args:
+  • *Game Version*,
+  • *Build Edition*
 
 ### PLANNED FEATURES
 

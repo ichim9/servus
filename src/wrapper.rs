@@ -15,6 +15,10 @@ pub fn inject_cmd(mut cmd:clap::Command) -> clap::Command{
         "purpur" => ("purpurmc.org",hashmap!{
             "game_version" => false,
             "build_edition" => false
+        }),
+        "paper" => ("papermc.io",hashmap!{
+            "game_version" => false,
+            "build_edition" => false
         })
     };
 
@@ -39,6 +43,9 @@ pub fn inject_match(arg:&clap::ArgMatches){
         }
         Some(("purpur",args)) =>{
             purpur_install(args)
+        }
+        Some(("paper",args)) =>{
+            paper_install(args);
         }
         _=>{}
     }
